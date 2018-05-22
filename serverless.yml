@@ -1,0 +1,113 @@
+service: lambda-api
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: us-east-1
+  timeout: 300
+  # apiKeys:
+  #   - todoAPI
+  environment:
+    DYNAMODB_TABLE: finvizdata
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      # Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+# you can add packaging information here
+package:
+ include:
+   - features/**
+   - model/**
+   - finvizapi/**
+   - database/**
+
+# route that interactive data with PostgresDB
+functions:
+  # listTodos:
+  #   handler: features/read.listTodos
+  #   events:
+  #     - http:
+  #         path: todos
+  #         method: get
+
+  # getTodo:
+  #   handler: features/read.getTodo
+  #   events:
+  #     - http:
+  #         path: todo/{id}
+  #         method: get
+  #         private: true
+
+  # createTodo:
+  #   handler: features/create.createTodo
+  #   events:
+  #     - http:
+  #         path: todo
+  #         method: post
+  #         private: true
+
+  # deleteTodo:
+  #   handler: features/delete.deleteTodo
+  #   events:
+  #     - http:
+  #         path: todo/{id}
+  #         method: delete
+  #         private: true
+
+  # updateTodo:
+  #   handler: features/update.updateTodo
+  #   events:
+  #     - http:
+  #         path: todo/{id}
+  #         method: patch
+  #         private: true
+
+  # api pull finviz data from dynamoDb
+  list:
+    handler: finvizapi/list.list
+    events:
+      - http:
+          path: finvizapi
+          method: get
+          cors: true
+
+# resources:
+#   Resources:
+#     FinvizdataDynamoDbTable:
+#       Type: 'AWS::DynamoDB::Table'
+#       DeletionPolicy: Retain
+#       Properties:
+#         AttributeDefinitions:
+#           -
+#             AttributeName: id
+#             AttributeType: S
+#         KeySchema:
+#           -
+#             AttributeName: id
+#             KeyType: HASH
+#         ProvisionedThroughput:
+#           ReadCapacityUnits: 1
+#           WriteCapacityUnits: 1
+#         TableName: 'finvizdatatable'
+
+
+
+
+
+
+    
+
+

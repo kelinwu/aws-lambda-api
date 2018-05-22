@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^3.20.3"
+  },
+  "dependencies": {
+    "aws": "0.0.3-2",
+    "aws-sdk": "^2.243.1",
+    "pg": "6.4.2",
+    "sequelize": "3.30.4",
+    "uuid": "^3.2.1"
+  }
+}
